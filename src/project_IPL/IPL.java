@@ -1,54 +1,104 @@
 package project_IPL;
-import java.util.HashMap;
-import java.io.FileReader;
+import java.util. *;
 import java.io. *;
 
 public class IPL {
+	   
 	
-	public static void matchesPerYear() {
-		
-	}
-
 	public static void main(String[] args) {
-		String matches = "/home/victor/Downloads/matches.csv";
-	    String deliveries ="/home/victor/Downloads/deliveries.csv";
-	    String line = "";
-	    
-	    
-	    try {
-	    BufferedReader mReader = new BufferedReader(new FileReader(matches));
-	    BufferedReader dReader = new BufferedReader(new FileReader(deliveries));
-	    HashMap<String,Integer> matches_per_season = new HashMap<String,Integer>();
-	    HashMap<String,Integer> wins_by_teams = new HashMap<String,Integer>();
-	    int matches_played=1;
-	    int matches_won=1;
-	    while ((line = mReader.readLine()) != null) {
-	    	String [] values = line.split(",");
-	    	if (matches_per_season.get(values[1])==null) {
-	    	matches_played=1;
-	    	matches_per_season.put(values[1], matches_played);  		
-	    	}else {
-	    	matches_played = matches_played +1;
-	    	matches_per_season.put(values[1], matches_played);
-	    	}
-	        if (wins_by_teams.get(values[10])==null) {
-	    	matches_won=1;
-	    	wins_by_teams.put(values[10], matches_won);
-	    	}else {
-	    		matches_won=matches_won+1;
-	    		wins_by_teams.put(values[10], matches_won);
-	    	}}
-	    System.out.println("Scenario:1");
-	    System.out.println("Total matches per each year = " + matches_per_season);
-	    System.out.println("Scenario:2");
-	    System.out.println("Total matches won by all teams year = " + wins_by_teams);
+		List<Matches> matches = getMatchesData();
+		List<Deliveries> deliveries = getDeliveriesData();
+		
+	    findMatchesPerYear(matches);
+//	    findMatchesWonByEachTeamOverYears();
+	    findExtraRunsConceededPerTeamIn2015();
 	}
-	    
-	    catch (Exception e) {
-	    	e.printStackTrace();
-	    }
-	    
-	    
+	
+	public static List<Matches> getMatchesData() {
+		String path = "Home/Downloads/matches.csv";
+		String line ="";
+		List<Matches> matchList = new ArrayList<> ();
+		try {
+			BufferedReader dataReader = new BufferedReader(new FileReader(path));
+			while((line = dataReader.readLine()) != null) {
+				String[] matchData = line.split(",");
+				Matches match = new Matches();
+				
+				int matchId = Integer.parseInt(matchData[0]);
+				int season = Integer.parseInt(matchData[1]);
+				int winByRuns = Integer.parseInt(matchData[11]);
+				int winByWickets = Integer.parseInt(matchData[12]);
+				
+				
+				match.setMatchId(matchId);
+				match.setYear(season);
+				match.setWinByRuns(winByRuns);
+				match.setWinByWickets(winByWickets);
+				match.setVenue(matchData[2]);
+				match.setDate(matchData[3]);
+				match.setTeam1(matchData[4]);
+				match.setTeam2(matchData[5]);
+				match.setTossWinner(matchData[6]);
+				matchList.add(match);
+				
+			}
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
+		  catch(Exception e) {
+		    	System.out.println("An IO Exception occured");
 	}
+		return matchList;
+		}
+	public static List<Deliveries> getDeliveriesData(){
+		String path = "Home/Downloads/deliveries.csv";
+		String line ="";
+		List<Deliveries> deliveriesList = new ArrayList<Deliveries>();
+		try {
+			BufferedReader dataReader = new BufferedReader(new FileReader(path));
+			while((line = dataReader.readLine()) != null) {
+				String[] deliveriesData = line.split(",");
+				Deliveries deliveries = new Deliveries();
+				
+				int matchId = Integer.parseInt(deliveriesData[0]);
+				int innings = Integer.parseInt(deliveriesData[1]);
+				int extraRuns = Integer.parseInt(deliveriesData[16]);
+				int totalRuns = Integer.parseInt(deliveriesData[17]);
+				
+				deliveries.setExtraRuns(extraRuns);
+				deliveries.setTotalRuns(totalRuns);
+				deliveriesList.add(deliveries);
+				
+			}
+			}
+			catch(FileNotFoundException e) {
+				System.out.println("File not found");
+			}
+		    catch(Exception e) {
+		    	System.out.println("An IO Exception occured");
+		    }
+		return deliveriesList;
+	}
+	
+public static void findMatchesPerYear(List<Matches> matches) {
+	
+ Map<Integer,Integer> matchesPerSeason = new HashMap<Integer,Integer>();
+ Iterator<Matches> totalMatches = matches.iterator();
+ while (totalMatches != null) {
+	    int year = totalMatches.next().getYear();
+    	if ( matchesPerSeason.containsKey(year)){
+    	matchesPerSeason.put(year, matchesPerSeason.get(year) + 1);  		
+    	}else {
+    	matchesPerSeason.put(year, 1);
+        }}
+    	
+    System.out.println(totalMatches);
 
+    	}
+  
+
+public static void findExtraRunsConceededPerTeamIn2015() {
+	
+}
 }
