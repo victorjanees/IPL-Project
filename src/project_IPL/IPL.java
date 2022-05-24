@@ -10,12 +10,12 @@ public class IPL {
 		List<Deliveries> deliveries = getDeliveriesData();
 		
 	    findMatchesPerYear(matches);
-//	    findMatchesWonByEachTeamOverYears();
+	    findMatchesWonByEachTeamOverYears(matches);
 	    findExtraRunsConceededPerTeamIn2015();
 	}
 	
 	public static List<Matches> getMatchesData() {
-		String path = "Home/Downloads/matches.csv";
+		String path = "src/matches.csv";
 		String line ="";
 		List<Matches> matchList = new ArrayList<> ();
 		try {
@@ -39,6 +39,7 @@ public class IPL {
 				match.setTeam1(matchData[4]);
 				match.setTeam2(matchData[5]);
 				match.setTossWinner(matchData[6]);
+				match.setWinner(matchData[10]);
 				matchList.add(match);
 				
 			}
@@ -52,7 +53,7 @@ public class IPL {
 		return matchList;
 		}
 	public static List<Deliveries> getDeliveriesData(){
-		String path = "Home/Downloads/deliveries.csv";
+		String path = "src/deliveries.csv";
 		String line ="";
 		List<Deliveries> deliveriesList = new ArrayList<Deliveries>();
 		try {
@@ -85,7 +86,7 @@ public static void findMatchesPerYear(List<Matches> matches) {
 	
  Map<Integer,Integer> matchesPerSeason = new HashMap<Integer,Integer>();
  Iterator<Matches> totalMatches = matches.iterator();
- while (totalMatches != null) {
+ while (totalMatches.hasNext()) {
 	    int year = totalMatches.next().getYear();
     	if ( matchesPerSeason.containsKey(year)){
     	matchesPerSeason.put(year, matchesPerSeason.get(year) + 1);  		
@@ -93,10 +94,23 @@ public static void findMatchesPerYear(List<Matches> matches) {
     	matchesPerSeason.put(year, 1);
         }}
     	
-    System.out.println(totalMatches);
+    System.out.println(matchesPerSeason);
 
     	}
   
+public static void findMatchesWonByEachTeamOverYears(List<Matches> matches) {
+	 Map<String,Integer> matchesWonByTeam = new HashMap<String,Integer>();
+	 Iterator<Matches> totalMatches = matches.iterator();
+	 while (totalMatches.hasNext()) {
+		    String wins = totalMatches.next().getWinner();
+	    	if ( matchesWonByTeam .containsKey(wins)){
+	    		matchesWonByTeam .put(wins, matchesWonByTeam .get(wins) + 1);  		
+	    	}else {
+	    		matchesWonByTeam .put(wins, 1);
+	        }}
+	    	
+	    System.out.println(matchesWonByTeam );
+}
 
 public static void findExtraRunsConceededPerTeamIn2015() {
 	
