@@ -13,7 +13,7 @@ public class IPL {
 	    findMatchesWonByEachTeamOverYears(matches);
 	    findExtraRunsConceededPerTeamIn2016(matches,deliveries);
 	    findEconomicalBowlerOf2015(matches,deliveries);
-	    findTotalNumberOfMatchesPlayedInIpl(matches);
+	    findTotalSixesByTeams(deliveries);
 	}
 	
 	public static List<Matches> getMatchesData() {
@@ -78,9 +78,15 @@ public class IPL {
 				int innings = Integer.parseInt(deliveriesData[1]);
 				int extraRuns = Integer.parseInt(deliveriesData[16]);
 				int totalRuns = Integer.parseInt(deliveriesData[17]);
+				int batsmanRuns = Integer.parseInt(deliveriesData[15]);
 				
 				deliveries.setExtraRuns(extraRuns);
 				deliveries.setTotalRuns(totalRuns);
+				deliveries.setMatchId(matchId);
+				deliveries.setBowlingTeam(deliveriesData[3]);
+				deliveries.setBowler(deliveriesData[8]);
+				deliveries.setBatsmanRuns(batsmanRuns);
+				deliveries.setBattingTeam(deliveriesData[2]);
 				deliveriesList.add(deliveries);
 			}
 		}
@@ -157,9 +163,9 @@ public static void  findEconomicalBowlerOf2015(List<Matches> matches,List<Delive
     while (matchesPlayed.hasNext()) {
         Matches match = matchesPlayed.next();
         if (match.getYear() == 2015) {
-            Iterator<Deliveries> deliveriesIterator = deliveries.iterator();
-            while (deliveriesIterator.hasNext()) {
-                Deliveries delivery = deliveriesIterator.next();
+            Iterator<Deliveries> totalDeliveries = deliveries.iterator();
+            while (totalDeliveries.hasNext()) {
+                Deliveries delivery = totalDeliveries.next();
                 if (delivery.getMatchId() == match.getMatchId()) {
                     if (runsGiven.containsKey(delivery.getBowler())) {
                         runsGiven.put(delivery.getBowler(), runsGiven.get(delivery.getBowler()) + delivery.getTotalRuns());
@@ -172,9 +178,9 @@ public static void  findEconomicalBowlerOf2015(List<Matches> matches,List<Delive
     while (matchesIterator2.hasNext()) {
         Matches match = matchesIterator2.next();
         if (match.getYear() == 2015) {
-            Iterator<Deliveries> deliveriesIterator = deliveries.iterator();
-            while (deliveriesIterator.hasNext()) {
-                Deliveries delivery = deliveriesIterator.next();
+            Iterator<Deliveries> totalDeliveries = deliveries.iterator();
+            while (totalDeliveries.hasNext()) {
+                Deliveries delivery = totalDeliveries.next();
                 if (delivery.getMatchId() == match.getMatchId()) {
                     if (oversBowled.containsKey(delivery.getBowler())) {
                         oversBowled.put(delivery.getBowler(), oversBowled.get(delivery.getBowler()) + 1.0);
@@ -195,11 +201,22 @@ public static void  findEconomicalBowlerOf2015(List<Matches> matches,List<Delive
         economyMap.put(bowler[j], economyRate);
         economy.put(economyRate,bowler[j]);
     }
-    System.out.println("Most Economical Bowler of 2015");
-    System.out.println(economyMap);
+    System.out.println("Most Economical Bowler of 2015 : ");
+    System.out.println(economy);
 }
 
-public static void findTotalNumberOfMatchesPlayedInIpl(List<Matches> matches) {
-	
+public static void findTotalSixesByTeams(List<Deliveries> deliveries) {
+	HashMap<String, Integer> sixes = new HashMap<String, Integer>();
+	Iterator<Deliveries> totalDelivery = deliveries.iterator();
+	while (totalDelivery.hasNext()) {
+		Deliveries delivery = totalDelivery.next();
+		if (delivery.getBatsmanRuns() == 6) {
+			if (sixes.containsKey(delivery.getBattingTeam())) {
+				sixes.put(delivery.getBattingTeam(), sixes.get(delivery.getBattingTeam() + 1));
+			}else sixes.put(delivery.getBattingTeam(), 1);
+		}
+	}
+	System.out.println("Total number of sixes by each teams over years : ");
+	System.out.println(sixes);
 }
 }
