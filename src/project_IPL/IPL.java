@@ -11,7 +11,9 @@ public class IPL {
 		
 	    findMatchesPerYear(matches);
 	    findMatchesWonByEachTeamOverYears(matches);
-	    findExtraRunsConceededPerTeamIn2015();
+	    findExtraRunsConceededPerTeamIn2016(matches,deliveries);
+	    findEconomicalBowlerOf2015(matches,deliveries);
+	    findTotalNumberOfMatchesPlayedInIpl(matches);
 	}
 	
 	public static List<Matches> getMatchesData() {
@@ -93,7 +95,7 @@ public static void findMatchesPerYear(List<Matches> matches) {
     	}else {
     	matchesPerSeason.put(year, 1);
         }}
-    	
+    System.out.println("Matches Played Per Season");
     System.out.println(matchesPerSeason);
 
     	}
@@ -108,11 +110,19 @@ public static void findMatchesWonByEachTeamOverYears(List<Matches> matches) {
 	    	}else {
 	    		matchesWonByTeam .put(wins, 1);
 	        }}
-	    	
+	    System.out.println("Matches won by teams over years");
 	    System.out.println(matchesWonByTeam );
 }
 
-public static void findExtraRunsConceededPerTeamIn2015() {
+public static void findExtraRunsConceededPerTeamIn2016(List<Matches> matches,List<Deliveries> deliveries) {
+	
+}
+
+public static void  findEconomicalBowlerOf2015(List<Matches> matches,List<Deliveries> deliveries) {
+	
+}
+
+public static void findTotalNumberOfMatchesPlayedInIpl(List<Matches> matches) {
 	
 }
 }
