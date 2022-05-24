@@ -88,12 +88,13 @@ public static void findMatchesPerYear(List<Matches> matches) {
 	
  Map<Integer,Integer> matchesPerSeason = new HashMap<Integer,Integer>();
  Iterator<Matches> totalMatches = matches.iterator();
+ int count = 0;
  while (totalMatches.hasNext()) {
 	    int year = totalMatches.next().getYear();
     	if ( matchesPerSeason.containsKey(year)){
-    	matchesPerSeason.put(year, matchesPerSeason.get(year) + 1);  		
+    	matchesPerSeason.put(year, count + 1);  		
     	}else {
-    	matchesPerSeason.put(year, 1);
+    	matchesPerSeason.put(year, count);
         }}
     System.out.println("Matches Played Per Season");
     System.out.println(matchesPerSeason);
@@ -103,10 +104,11 @@ public static void findMatchesPerYear(List<Matches> matches) {
 public static void findMatchesWonByEachTeamOverYears(List<Matches> matches) {
 	 Map<String,Integer> matchesWonByTeam = new HashMap<String,Integer>();
 	 Iterator<Matches> totalMatches = matches.iterator();
+	 int count = 0;
 	 while (totalMatches.hasNext()) {
 		    String wins = totalMatches.next().getWinner();
 	    	if ( matchesWonByTeam .containsKey(wins)){
-	    		matchesWonByTeam .put(wins, matchesWonByTeam .get(wins) + 1);  		
+	    		matchesWonByTeam .put(wins, count + 1);  		
 	    	}else {
 	    		matchesWonByTeam .put(wins, 1);
 	        }}
@@ -115,7 +117,25 @@ public static void findMatchesWonByEachTeamOverYears(List<Matches> matches) {
 }
 
 public static void findExtraRunsConceededPerTeamIn2016(List<Matches> matches,List<Deliveries> deliveries) {
-	
+	HashMap<String, Integer> extraRuns = new HashMap<String, Integer>();
+	Iterator<Matches> matchIterator = matches.iterator();
+	Iterator<Deliveries> deliveryIterator = deliveries.iterator();
+	while (matchIterator.hasNext()) {
+		Matches match = matchIterator.next();
+		if (match.getYear() == 2016) {
+			while (deliveryIterator.hasNext()) {
+				Deliveries delivery = deliveryIterator.next();
+				if(delivery.getMatchId() == match.getMatchId()) {
+					if (extraRuns.containsKey(delivery.getBowlingTeam())) {
+						extraRuns.put(delivery.getBowlingTeam(), extraRuns.get(delivery.getBowlingTeam()) + delivery.getExtraRuns());
+					}else extraRuns.put(delivery.getBowlingTeam(), delivery.getExtraRuns());
+					
+				}
+			}
+		}
+	}
+	System.out.println("Extra runs conceeded in 2016");
+	System.out.println(extraRuns);
 }
 
 public static void  findEconomicalBowlerOf2015(List<Matches> matches,List<Deliveries> deliveries) {
