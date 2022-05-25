@@ -212,7 +212,7 @@ public static void findTotalSixesByTeams(List<Deliveries> deliveries) {
 		Deliveries delivery = totalDelivery.next();
 		if (delivery.getBatsmanRuns() == 6) {
 			if (sixes.containsKey(delivery.getBattingTeam())) {
-				sixes.put(delivery.getBattingTeam(), sixes.get(delivery.getBattingTeam() + 1));
+				sixes.put(delivery.getBattingTeam(), sixes.get(delivery.getBattingTeam() )+ 1);
 			}else sixes.put(delivery.getBattingTeam(), 1);
 		}
 	}
